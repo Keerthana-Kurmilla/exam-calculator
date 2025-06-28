@@ -19,5 +19,8 @@ This project is a simple web-based tool that allows students to calculate their 
 - JavaScript
 
 ---
+## Live Demo
+Check out the project here: [Exam Calculator Website](https://keerthana-kurmilla.github.io/exam-calculator/)
+
 
 *Created to help students easily track their academic performance!*
