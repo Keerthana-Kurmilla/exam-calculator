@@ -84,52 +84,40 @@
   </style>
 </head>
 <body>
-
   <div class="tab-buttons">
     <button onclick="showTab('attendanceTab')">📗 Attendance</button>
     <button onclick="showTab('cgpaTab')">🎓 CGPA</button>
   </div>
-
   <!-- Attendance Calculator -->
   <div class="container tab-content active" id="attendanceTab">
     <h2>📗 Attendance Calculator</h2>
     <label for="total">Total Classes:</label>
     <input type="number" id="total" />
-
     <label for="attended">Attended Classes:</label>
     <input type="number" id="attended" />
-
     <button class="calc" onclick="calculateAttendance()">Calculate Attendance</button>
     <div class="result" id="attendanceOutput"></div>
   </div>
-
   <!-- CGPA Calculator -->
   <div class="container tab-content" id="cgpaTab">
     <h2>🎓 CGPA Calculator</h2>
-
     <label for="semesters">Number of Semesters:</label>
     <input type="number" id="semesters" placeholder="e.g., 4" />
-
     <div id="sgpaInputs"></div>
-
     <label for="multiplier">Select Multiplier:</label>
     <select id="multiplier" onchange="toggleCustomMultiplier()">
       <option value="9.5">Standard (×9.5)</option>
       <option value="10">Simple (×10)</option>
       <option value="custom">Custom Multiplier</option>
     </select>
-
     <div id="customMultiplierDiv" style="display: none; margin-top: 10px;">
       <label for="customMultiplier">Enter Custom Multiplier:</label>
       <input type="number" id="customMultiplier" step="0.1" placeholder="e.g., 9.2" />
     </div>
-
     <button class="calc" onclick="generateSgpaInputs()">Add SGPA & Credit Inputs</button>
     <button class="calc" onclick="calculateCGPA()">Calculate CGPA</button>
-
     <div class="result" id="cgpaOutput"></div>
   </div>
-
   <script>
     function showTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(tab => {
@@ -137,16 +125,13 @@
       });
       document.getElementById(tabId).classList.add('active');
     }
-
     function calculateAttendance() {
       const total = parseFloat(document.getElementById("total").value) || 0;
       const attended = parseFloat(document.getElementById("attended").value) || 0;
-
       if (attended > total) {
         document.getElementById("attendanceOutput").innerHTML = "⚠️ Attended cannot be more than total.";
         return;
       }
-
       const absent = total - attended;
       const percentage = (attended / total) * 100;
       const status = percentage >= 75 ? "✅ Sufficient" : "⚠️ Shortage";
@@ -158,12 +143,10 @@
         🔍 Status: ${status}
       `;
     }
-
     function generateSgpaInputs() {
       const num = parseInt(document.getElementById("semesters").value);
       const container = document.getElementById("sgpaInputs");
       container.innerHTML = "";
-
       for (let i = 1; i <= num; i++) {
         const sgpaInput = document.createElement("input");
         sgpaInput.type = "number";
@@ -174,7 +157,6 @@
         sgpaInput.id = `sgpa${i}`;
         sgpaInput.style = "width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; border: 1px solid #ccc;";
         container.appendChild(sgpaInput);
-
         const creditInput = document.createElement("input");
         creditInput.type = "number";
         creditInput.min = "0";
@@ -184,7 +166,6 @@
         container.appendChild(creditInput);
       }
     }
-
     function toggleCustomMultiplier() {
       const multiplierSelect = document.getElementById("multiplier");
       const customDiv = document.getElementById("customMultiplierDiv");
@@ -194,36 +175,29 @@
         customDiv.style.display = "none";
       }
     }
-
     function calculateCGPA() {
       const num = parseInt(document.getElementById("semesters").value);
       let totalWeighted = 0;
       let totalCredits = 0;
-
       for (let i = 1; i <= num; i++) {
         const sgpa = parseFloat(document.getElementById(`sgpa${i}`).value) || 0;
         const credit = parseFloat(document.getElementById(`credit${i}`).value) || 0;
         totalWeighted += sgpa * credit;
         totalCredits += credit;
       }
-
       const cgpa = totalWeighted / totalCredits;
-
       let multiplier = document.getElementById("multiplier").value;
       if (multiplier === "custom") {
         multiplier = parseFloat(document.getElementById("customMultiplier").value) || 0;
       } else {
         multiplier = parseFloat(multiplier);
       }
-
       const percentage = cgpa * multiplier;
-
       document.getElementById("cgpaOutput").innerHTML = `
         📘 Weighted CGPA: <strong>${cgpa.toFixed(2)}</strong><br>
         📈 Approx. Percentage (×${multiplier}): <strong>${percentage.toFixed(2)}%</strong>
       `;
     }
   </script>
-
 </body>
 </html>
