@@ -1,1 +1,1 @@
-# exam-calculator
+# Student Tools - Attendance & CGPA Calculator
